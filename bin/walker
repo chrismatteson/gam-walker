@@ -1,0 +1,25 @@
+#!/bin/bash
+
+directory=$1
+bucket=$2
+
+set -e
+
+check_bucket()
+{
+  aws s3 ls s3://$bucket
+}
+
+sync_bucket()
+{
+  aws s3 sync $directory s3://$bucket/thumbnails --include "*.thm"
+  aws s3 sync $directory s3://$bucket/lrv --include "*.lrv"
+  aws s3 sync $directory s3://$bucket/videos --include "*.mp4"
+}
+
+check_bucket $bucket
+sync_bucket $directory $bucket
+
+
+
+
